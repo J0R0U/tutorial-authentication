@@ -30,7 +30,7 @@ class AuthenticationServer {
             secretOrKey : 'ballspielvereinborussiadortmundvon1909'
         } ;
 
-        let HStrategy : Passport.Strategy = new JWTStrategy( HOptions , this.JwtVerify );
+        let HStrategy : Passport.Strategy = new JWTStrategy.Strategy( HOptions , this.JwtVerify );
 
         Passport.use(HStrategy);
     }
@@ -75,8 +75,6 @@ class AuthenticationServer {
         } else {
             _Response.status(500);
         }
-
-        
     }
 
     private OnLogout(_Request: Express.Request, _Response: Express.Response): void {
@@ -98,7 +96,6 @@ class AuthenticationServer {
         this.Application.listen(this.Port, this.OnServerStart);
     }
 }
-
 
 let Server = new AuthenticationServer();
 Server.Start();
