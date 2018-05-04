@@ -77,4 +77,11 @@ export namespace AppActionHandler{
             }
         } );
     }
+
+    export function OnCheckLoginState():void{
+        AppDispatcher.dispatch( {
+            ActionType : AppActionType.AT_CHECK_LOGIN ,
+            Data : {}
+        } ); 
+    }
 }

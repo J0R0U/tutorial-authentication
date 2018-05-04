@@ -42,6 +42,25 @@ class LoginStoreClass extends Store<AppAction>{
         );
     }
 
+    private CheckLogin():void{
+        $.ajax(
+            {
+                type: 'GET',
+                url: 'http://localhost:8080/check',
+                success: this.OnCheckSucceeded,
+                error: this.OnCheckFailed
+            }
+        );   
+    }
+
+    private OnCheckSucceeded( _Response : string ): void {
+        AppActionHandler.OnLoginSucceeded( _Response );
+    }
+
+    private OnCheckFailed(_Response: any): void {
+        AppActionHandler.OnLoginFailed(_Response.message);
+    }
+
     private OnLoginSucceeded( _Answer : string ): void {
         AppActionHandler.OnLoginSucceeded( _Answer );
     }
@@ -89,6 +108,11 @@ class LoginStoreClass extends Store<AppAction>{
             case AppActionType.AT_LOGOUT_FAILED:
                 alert('logout failed');
                 this.__AuthState = AuthState.AUTHENTICATED;
+                break;
+            
+            case AppActionType.AT_CHECK_LOGIN:
+            this.__AuthState = AuthState.LOADING ;
+                this.CheckLogin();
                 break;
         }
 

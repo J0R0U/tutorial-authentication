@@ -6,11 +6,17 @@ import { PublicView } from './views/view-public';
 import { ProtectedView } from './views/view-protected';
 import { LoginView } from './views/view-login';
 import { AuthBar } from './auth-bar';
+import { AppActionHandler } from '../app/app-action-handler';
 
 export interface IApplicationProps { }
 export interface IApplicationState { }
 
 export class Application extends React.Component<IApplicationProps, IApplicationState> {
+
+    componentDidMount():void{
+        AppActionHandler.OnCheckLoginState();   
+    }
+
     render() {
         return (
             <HashRouter>

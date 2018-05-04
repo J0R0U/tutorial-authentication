@@ -9,5 +9,7 @@ export enum AppActionType {
 
     AT_SECRET_REQUESTED ,
     AT_SECRET_SUCCEEDED ,
-    AT_SECRET_FAILED
+    AT_SECRET_FAILED ,
+
+    AT_CHECK_LOGIN
 }

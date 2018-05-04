@@ -52,3 +52,58 @@ Außerdem müssen wir die SerializeUser und DeserializeUser Methoden von Passpor
 ```
 
 Die Nutzung von Sessions erfolgt nun automatisch über den Server und den Browser.
+
+## Initialer Check
+Unser Login ist nun Session gebunden und kann somit auch noch bestehen, wenn die Seite initial aufgerufen wird.
+Deswegen bauen wir noch einen internen Check ein:
+
+```typescript
+    componentDidMount():void{
+        AppActionHandler.OnCheckLoginState();   
+    }
+```
+
+```typescript
+    export function OnCheckLoginState():void{
+        AppDispatcher.dispatch( {
+            ActionType : AppActionType.AT_CHECK_LOGIN ,
+            Data : {}
+        } ); 
+    }
+```
+
+```typescript
+    private CheckLogin():void{
+        $.ajax(
+            {
+                type: 'GET',
+                url: 'http://localhost:8080/check',
+                success: this.OnCheckSucceeded,
+                error: this.OnCheckFailed
+            }
+        );   
+    }
+
+    private OnCheckSucceeded( _Response : string ): void {
+        AppActionHandler.OnLoginSucceeded( _Response );
+    }
+
+    private OnCheckFailed(_Response: any): void {
+        AppActionHandler.OnLoginFailed(_Response.message);
+    }
+```
+
+
+```typescript
+        // Check
+        this.Application.get( '/check' , this.OnCheck );
+    }
+
+    private OnCheck(_Request: Express.Request, _Response: Express.Response): void {
+        if( _Request.user ){
+            _Response.end(_Request.user);
+        } else {
+            _Response.status(500).send({ error : '_User isnt logged In' });
+        }
+    }
+```

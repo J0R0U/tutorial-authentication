@@ -63,6 +63,17 @@ class AuthenticationServer {
 
         // Logout
         this.Application.post( '/logout', this.OnLogout );
+
+        // Check
+        this.Application.get( '/check' , this.OnCheck );
+    }
+
+    private OnCheck(_Request: Express.Request, _Response: Express.Response): void {
+        if( _Request.user ){
+            _Response.end(_Request.user);
+        } else {
+            _Response.status(500).send({ error : '_User isnt logged In' });
+        }
     }
 
     private OnLogin(_Request: Express.Request, _Response: Express.Response): void {
