@@ -49,7 +49,6 @@ class AuthenticationServer {
         this.Application.use(BodyParser.urlencoded( { extended : false } ));
         this.Application.use(BodyParser.json());
         this.Application.use(Passport.initialize());
-        this.Application.use(Passport.session()); // for session support
     }
 
     private InitializeRoutes() {
