@@ -1,0 +1,93 @@
+:root{
+    --color-red: #F44336;    
+}
+
+a:link,
+a:visited ,
+a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+
+html,
+body,
+#id-application,
+.application{
+    height: 100%;
+    margin: 100%;
+
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.view{
+    height: calc( 100% - 60px );
+    width: 100%;
+    float: left;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+/*Auth Bar*/
+.auth-bar{
+    height: 60px;
+    width: 100%;
+
+    float: left;
+    color: #fff;
+    font-size: small;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.authenticated{
+    background-color: #4CAF50;
+}
+.not-authenticated{
+    background-color: #F44336;
+}
+.loading{
+    background-color: #2196F3;
+}
+.auth-action{
+    font-weight: bold;
+    border: #fff solid thin;
+    border-radius: 4px;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.auth-name{
+    font-weight: bold;
+}
+
+/*Login*/
+.login-form > input{
+    margin: 10px;
+    height: 40px;
+    text-indent: 10px;
+    border: #ddd solid thin ;
+    float: left;
+    border-radius: 4px;
+    width: 200px;
+}
+.login-form > button{
+    margin: 10px;
+    height: 40px;
+    background-color: #fff;
+    border: #ddd solid thin;
+    float: left;
+    border-radius: 4px;
+    width: 200px;
+}
+.login-form > button:hover{
+    cursor: pointer;
+    background-color: #ddd;
+}

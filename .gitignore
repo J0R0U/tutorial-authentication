@@ -1,0 +1,6 @@
+node_modules/
+dist/*
+!dist/public
+dist/public/*
+!dist/public/index.html
+*.d.ts
