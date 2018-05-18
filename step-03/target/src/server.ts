@@ -3,9 +3,10 @@ import Passport = require('passport');
 import BodyParser = require('body-parser');
 import Session = require('express-session');
 import JWT = require('jsonwebtoken');
-import JWTStrategy = require('passport-jwt');
+import { Strategy as JWTStrategy, StrategyOptions as JWTStrategyOptions } from 'passport-jwt';
 import { ExtractJwt } from 'passport-jwt';
 
+const PRIVATE_KEY : string = 'ballspielvereinborussiadortmundvon1909' ;
 class AuthenticationServer {
 
     private Application: Express.Application;
@@ -25,19 +26,20 @@ class AuthenticationServer {
     }
 
     private InitializeStrategies():void{
-        let HOptions : JWTStrategy.StrategyOptions = {
+        let HOptions : JWTStrategyOptions = {
             jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken() ,
-            secretOrKey : 'ballspielvereinborussiadortmundvon1909'
+            secretOrKey : PRIVATE_KEY
         } ;
 
-        let HStrategy : Passport.Strategy = new JWTStrategy.Strategy( HOptions , this.JwtVerify );
+        let HStrategy : Passport.Strategy = new JWTStrategy( HOptions , this.JwtVerify );
 
         Passport.use(HStrategy);
     }
 
     private JwtVerify( _Payload : any , _Callback : (error: any, user?: any, info?: any) => void ): void {
+        console.log();
         console.log( 'payload received', _Payload );
-        if( _Payload.User == 'fzentgra' && _Payload.Password == '1234' ){
+        if( _Payload.User == 'fzentgra' ){
             _Callback( null , _Payload.User ) ;
         } else {
             _Callback( null , false ) ;
@@ -45,18 +47,14 @@ class AuthenticationServer {
     }
 
     private InitializeMiddleware() {
-        this.Application.use(Express.static('public'));
-        this.Application.use(BodyParser.urlencoded( { extended : false } ));
-        this.Application.use(BodyParser.json());
         this.Application.use(Passport.initialize());
+        this.Application.use(BodyParser.urlencoded( { extended : true } ));
+        this.Application.use(BodyParser.json());
     }
 
     private InitializeRoutes() {
         // Login
         this.Application.post('/login', this.OnLogin);
-
-        // Logout
-        this.Application.post( '/logout', this.OnLogout );
 
         // Check
         this.Application.get( '/secret' , Passport.authenticate('jwt', { session : false }), this.OnSecret );
@@ -69,19 +67,8 @@ class AuthenticationServer {
     private OnLogin(_Request: Express.Request, _Response: Express.Response): void {
         if( _Request.body.User == 'fzentgra' && _Request.body.Password == '1234' ){
             let HPayload : any = { 'User' : _Request.body.User } ;
-            let HToken : string = JWT.sign( HPayload , 'ballspielvereinborussiadortmundvon1909' );
+            let HToken : string = JWT.sign( HPayload , PRIVATE_KEY );
             _Response.end(HToken);
-        } else {
-            _Response.status(500);
-        }
-    }
-
-    private OnLogout(_Request: Express.Request, _Response: Express.Response): void {
-        // doesnt work. maybe because of sessions?
-        console.log('logout ' + _Request.user);
-        if( _Request.user ){
-            _Request.logout();
-            _Response.end('success');
         } else {
             _Response.end('error');
         }
